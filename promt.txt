@@ -1,0 +1,481 @@
+# Project: CusIot — Electronics & Technology Store
+
+Build a complete, responsive, modern e-commerce website named **CusIot**.
+
+## 1. Business overview
+
+CusIot is a small, student-started electronics and technology business based in Imphal, Manipur, India.
+
+The website will initially operate as a product catalogue and WhatsApp-based ordering platform.
+
+Customers can:
+- Browse available products.
+- Explore product categories.
+- View product descriptions, images and prices.
+- Select product quantities.
+- Add products to their cart.
+- Enter their delivery information.
+- View their final order amount.
+- Place orders through WhatsApp.
+
+The owner will personally receive and manage all orders through WhatsApp.
+
+There will be no customer registration, login system, online payment gateway or automated order-processing system in the initial version.
+
+## 2. Technology stack
+
+Use the following technologies:
+
+- Frontend: React + TypeScript.
+- Build tool: Vite.
+- Styling: Tailwind CSS.
+- Icons: Lucide React.
+- Database: Supabase PostgreSQL.
+- Product image storage: Supabase Storage.
+- Hosting: Cloudflare Pages.
+- Version control: GitHub.
+
+Use a clean, component-based architecture.
+
+Avoid unnecessary dependencies and complicated backend infrastructure.
+
+## 3. Website design
+
+Create a professional, clean and modern electronics-store design.
+
+Design requirements:
+- Minimalist interface.
+- Professional typography.
+- Consistent spacing.
+- Clean product cards.
+- Subtle animations.
+- Smooth navigation.
+- Responsive layout.
+- Excellent mobile experience.
+- Proper loading and error states.
+- Accessible buttons and form fields.
+
+Avoid:
+- Excessive gradients.
+- Excessive animations.
+- Overly rounded components everywhere.
+- Unnecessary glassmorphism.
+- Generic AI-generated website aesthetics.
+- Fake testimonials and fake customer reviews.
+
+The website should look like a genuine small electronics business.
+
+Include a light/dark theme if practical.
+
+## 4. Website pages
+
+### Homepage
+
+Include:
+- CusIot logo and navigation.
+- Hero section introducing CusIot.
+- Shop Now button.
+- Featured products fetched from Supabase.
+- Product categories fetched dynamically.
+- Recently added products.
+- Short introduction to the business.
+- WhatsApp contact button.
+- Footer.
+
+### Shop page
+
+Display all published products from Supabase.
+
+Include:
+- Product images.
+- Product names.
+- Prices in INR.
+- Stock availability.
+- Categories.
+- Search.
+- Category filtering.
+- Sorting by price and newest arrivals.
+
+Products with zero stock must display an Out of Stock label.
+
+### Product details
+
+Each product should have:
+- Product image.
+- Product name.
+- Description.
+- Price.
+- Availability.
+- Quantity selector.
+- Add to Cart button.
+
+Customers must not be able to select quantities exceeding available stock.
+
+### Cart page
+
+Display:
+- Selected products.
+- Product images.
+- Unit prices.
+- Quantities.
+- Individual totals.
+- Subtotal.
+- Delivery charges.
+- Grand total.
+
+Allow customers to increase, decrease or remove products.
+
+Persist the cart locally using localStorage.
+
+### Checkout page
+
+Create a checkout form containing:
+
+Customer details:
+- Full name.
+- House address / locality.
+- City.
+- State.
+- PIN code.
+- Optional additional delivery instructions.
+
+Display the complete order summary.
+
+Calculate:
+
+Subtotal = Sum of product prices × quantities.
+
+Grand Total = Subtotal + Delivery Charges.
+
+Delivery charges must be configurable from the database.
+
+Validate all required fields before generating an order message.
+
+Do not require an account or registration.
+
+## 5. WhatsApp ordering
+
+This is the primary ordering method.
+
+WhatsApp number: 918837473684
+
+When customers click the Place Order on WhatsApp button:
+
+1. Validate their checkout information.
+2. Generate a complete formatted WhatsApp message.
+3. Include customer details.
+4. Include all selected products.
+5. Include quantities and individual prices.
+6. Include subtotal.
+7. Include delivery charges.
+8. Include the grand total.
+9. Include a prepaid-payment notice.
+10. Open WhatsApp using its official click-to-chat URL.
+
+Use:
+
+https://wa.me/918837473684?text=ENCODED_MESSAGE
+
+Use JavaScript encodeURIComponent() to encode the message properly.
+
+Example generated message:
+
+Hello CusIot! I would like to place an order.
+
+CUSTOMER DETAILS
+Name: Alex
+
+DELIVERY ADDRESS
+Address: Uripok Bachaspati Leikai
+City: Imphal
+State: Manipur
+PIN Code: 795001
+
+ORDER DETAILS
+
+1. ESP32 Mini Keychain
+Quantity: 3
+Unit Price: ₹299
+Total: ₹897
+
+Subtotal: ₹897
+Delivery Charges: ₹50
+Grand Total: ₹947
+
+Payment Method: Prepaid only.
+
+Please confirm availability and payment instructions.
+
+IMPORTANT:
+- WhatsApp must open with the message prefilled.
+- The customer must manually press Send.
+- Never claim that an order has been placed merely because WhatsApp opened.
+- Show a notice explaining that the owner will confirm the order personally.
+- If WhatsApp cannot open, provide a copyable order message.
+- Do not automatically deduct inventory when the WhatsApp link is opened.
+
+## 6. Payment system
+
+For the initial version:
+
+- Accept prepaid orders only.
+- Do not integrate Razorpay, Stripe or other payment gateways.
+- Do not collect card information.
+- Do not claim that payment has been completed.
+- The owner will personally communicate payment instructions through WhatsApp.
+- The owner will confirm payment before fulfilling an order.
+
+Display a clear notice:
+
+"Currently, CusIot accepts prepaid orders only. Your order will be confirmed personally through WhatsApp. Please wait for confirmation and payment instructions before making any payment."
+
+## 7. Supabase database
+
+Connect the application to Supabase.
+
+Create the following database tables:
+
+### products
+
+Fields:
+- id
+- name
+- slug
+- description
+- price
+- stock_quantity
+- image_url
+- category_id
+- is_featured
+- is_published
+- created_at
+- updated_at
+
+### categories
+
+Fields:
+- id
+- name
+- slug
+- description
+- image_url
+- is_active
+- created_at
+
+### store_settings
+
+Fields:
+- id
+- store_name
+- whatsapp_number
+- primary_email
+- secondary_email
+- delivery_charge
+- free_delivery_threshold (optional)
+- currency
+- announcement
+- updated_at
+
+All product information, categories, stock quantities and store settings must be fetched dynamically from Supabase.
+
+Do not hardcode products into React components.
+
+### Database security
+
+- Enable Row Level Security.
+- Allow anonymous visitors to read published products and active categories.
+- Allow public reading of necessary store settings.
+- Do not allow anonymous visitors to insert, update or delete products.
+- Do not allow public stock modification.
+- Never expose the Supabase service-role key.
+- Use only the public anon/publishable key in frontend configuration.
+- Keep owner database management inside the Supabase dashboard.
+
+The website must not include an unauthenticated admin interface.
+
+## 8. Product image management
+
+Use Supabase Storage.
+
+Create a public product-image bucket.
+
+The owner should be able to upload product images directly through the Supabase dashboard.
+
+Store the image URL in the products table.
+
+Optimize image display and use appropriate fallback images when an image is unavailable.
+
+## 9. Inventory management
+
+The owner will personally manage inventory through Supabase.
+
+For example:
+
+If a product has 15 units, the website displays 15 available units.
+
+If the owner changes the quantity to 8 in Supabase, the website should reflect the new quantity.
+
+Requirements:
+- Display current stock.
+- Hide or disable ordering for unavailable products.
+- Prevent customers from selecting more than the displayed stock.
+- Do not decrease inventory simply because someone adds an item to their cart.
+- The owner will update inventory after personally confirming an order.
+
+## 10. Future category expansion
+
+The website must support dynamically created categories.
+
+Initially, categories might include:
+- Electronic Components
+- Development Boards
+- ESP32 Products
+- DIY Kits
+- Accessories
+
+In the future, I may introduce:
+- Codes & Scripts
+- Tutorials
+- Digital Products
+- IoT Projects
+- Services
+
+Do not build the website in a way that requires manually creating new React pages for every new category.
+
+Use dynamic category routing and reusable components.
+
+Design the database so digital products and tutorials can be added later without rebuilding the entire application.
+
+## 11. About CusIot
+
+Create an About section.
+
+Use the following introduction:
+
+"Welcome to CusIot, a small student-started electronics and technology business based in Imphal, Manipur.
+
+Our goal is to make electronics components, development boards, DIY products and technology resources more accessible.
+
+CusIot is currently an independently managed small startup. Every order is personally handled and confirmed through WhatsApp.
+
+We are starting small, learning, building and growing one step at a time."
+
+Include a clear but tasteful notice:
+
+"CusIot is a student-started small business. We are currently operating on a small scale, so product availability and order processing are handled personally. Thank you for supporting our journey."
+
+Do not falsely claim that the business is a registered company or an established large retailer.
+
+## 12. Contact information
+
+Business name: CusIot
+
+WhatsApp: 8837473684
+
+Primary email: cusiot.store@gmail.com
+
+Secondary email: cusiot@aol.com
+
+Create:
+- WhatsApp contact button.
+- Email contact links.
+- Contact section.
+
+## 13. Owner information in the footer
+
+At the very bottom of the website, include a small, subtle section about the person behind CusIot.
+
+It should not be a highlighted promotional section.
+
+Use small typography, muted text and minimal spacing.
+
+Content:
+
+"Built and independently managed by Leishem Soubam."
+
+Portfolio: https://leishem.me
+
+Instagram: https://www.instagram.com/soubam_leishem/
+
+GitHub: https://github.com/S-Leishem
+
+Make the links clickable.
+
+Do not make this section larger or more prominent than the actual business information.
+
+## 14. SEO and performance
+
+Implement:
+- Page titles.
+- Meta descriptions.
+- Open Graph metadata.
+- Favicon.
+- Sitemap.
+- Robots.txt.
+- Semantic HTML.
+- Image optimization.
+- Lazy loading.
+- Responsive images.
+
+Use CusIot branding throughout.
+
+## 15. Environment configuration
+
+Create a .env.example file.
+
+Use:
+
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+
+Never hardcode private credentials.
+
+Provide instructions for configuring environment variables in Cloudflare Pages.
+
+## 16. Project documentation
+
+Create a README.md explaining:
+
+1. How to install dependencies.
+2. How to run the website locally.
+3. How to create a Supabase project.
+4. How to execute the database SQL.
+5. How to create the product image bucket.
+6. How to configure environment variables.
+7. How to add products.
+8. How to update inventory.
+9. How to create categories.
+10. How to update delivery charges.
+11. How to deploy through Cloudflare Pages.
+
+Include the complete SQL schema and security policies in the repository.
+
+## 17. Final requirements
+
+The website must be fully functional, not just a static design.
+
+Before finishing:
+
+- Test product fetching.
+- Test category fetching.
+- Test search and filters.
+- Test cart functionality.
+- Test quantity validation.
+- Test checkout validation.
+- Test delivery charge calculations.
+- Test WhatsApp message generation.
+- Test mobile responsiveness.
+- Test out-of-stock products.
+- Test database security.
+
+Do not leave nonfunctional buttons or placeholder links.
+
+Do not create a customer login system.
+
+Do not create an admin login system.
+
+The owner will manage the entire catalogue directly through Supabase.
+
+Build the project in a clean, maintainable and production-conscious way.
+
+Prioritize functionality, security, simplicity and low hosting costs over unnecessary features.
